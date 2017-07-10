@@ -12,9 +12,9 @@ tcp.connect(server_address)
 
 while True:
     
-    msg = 'mensagem de teste'.encode()
+    msg = 'mensagem de teste'
     
-    print ('sending ' + msg)
+    print ('sending -->  ' + msg)
     tcp.send(msg)
     time.sleep(10)
         

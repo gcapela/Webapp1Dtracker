@@ -20,8 +20,8 @@ while True:
     print ('connected with ' + str(client_address))
 
     msg = con.recv(1024)
-    print ('received ' + msg)
+    print ('received -->  ' + msg)
 
 
 print('closing connection')
-con.close()              
+con.close()
