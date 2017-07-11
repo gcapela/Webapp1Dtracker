@@ -2,7 +2,6 @@
 
 import socket
 import thread
-import sys
 
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
