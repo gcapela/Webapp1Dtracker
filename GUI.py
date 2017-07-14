@@ -116,4 +116,4 @@ while True:
                 i += 1
         
         
-    root.mainloop()
+    root.update_idletasks()
