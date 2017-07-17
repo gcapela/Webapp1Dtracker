@@ -28,12 +28,12 @@ def read(conn, client_address):
         if str(client_address[0]) not in dados.keys():
 
             dados[str(client_address[0])] = [(float(msg.decode().split(',')[0]), float(
-                msg.decode().split(',')[1]), float(msg.decode().split(',')[2]))]
+                msg.decode().split(',')[1]), float(msg.decode().split(',')[2]), float(msg.decode().split(',')[3]))]
 
         else:
 
             dados[str(client_address[0])] += [(float(msg.decode().split(',')[0]),
-                                               float(msg.decode().split(',')[1]), float(msg.decode().split(',')[2]))]
+                                               float(msg.decode().split(',')[1]), float(msg.decode().split(',')[2]), float(msg.decode().split(',')[3]))]
 
         print('dados ---> ' + str(dados))
 

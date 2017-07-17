@@ -12,7 +12,7 @@ tcp.connect(server_address)
 
 while True:
 
-    msg = '11 , 1.64 , 35'
+    msg = '11 , 1.23 , 35 , 0.89'
 
     print('sending -->  ' + msg)
     tcp.send(msg.encode())
