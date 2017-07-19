@@ -108,9 +108,9 @@ while True:
 
         label_1.grid(column=0, row=1)
         label_2.grid(column=2, row=1)
-        label_3.grid(column=4, row=1)
-        label_4.grid(column=6, row=1)
-        label_5.grid(column=8, row=1)
+        label_3.grid(column=2, row=1)
+        label_4.grid(column=3, row=1)
+        label_5.grid(column=4, row=1)
 
         i = 0
 
