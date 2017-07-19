@@ -107,7 +107,7 @@ while True:
         label_5 = Label(root, text='Orientacao [rad]')
 
         label_1.grid(column=0, row=1)
-        label_2.grid(column=2, row=1)
+        label_2.grid(column=1, row=1)
         label_3.grid(column=2, row=1)
         label_4.grid(column=3, row=1)
         label_5.grid(column=4, row=1)
