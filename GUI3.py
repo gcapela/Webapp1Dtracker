@@ -165,45 +165,12 @@ def GUIcheck():
 
                 i += 1
 
-    #        if(j!= new_data):
-    #
-    #            print('j != new_data\n')
-
-    #            i=0
-
-    #            tensao_i.config(text=str(dados[client_address][j][0]))
-    #            corrente_i.config(text=str(dados[client_address][j][1]))
-    #            potencia_i.config(text=str(
-    #                dados[client_address][j][0] * dados[client_address][j][1]))
-    #            temperatura_i.config(text=str(dados[client_address][j][2]))
-    #            orientacao_i.config(text=str(dados[client_address][j][3]))
-
-    #            tensao_i.grid(column=0, row=j + 2)
-    #            corrente_i.grid(column=2, row=j + 2)
-    #            potencia_i.grid(column=4, row=j + 2)
-    #            temperatura_i.grid(column=6, row=j + 2)
-    #            orientacao_i.grid(column=8, row=j + 2)
-
-    #            j = new_data
-
         new_data = 0
 
         root.update_idletasks()
         root.update()
 
-#    root.mainloop()
-
-class GUIthread(threading.Thread):
-    def __inti__(self):
-        threading.Thread.__init__(self)
-    def run(self):
-        GUIcheck()
-
-GUIthread.daemon=True
-
-GUIthread().start()
-
-#GUIthread().join()
+_thread.start_new_thread(GUIcheck, ())
 
 while True:
     pass
