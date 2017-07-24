@@ -1,4 +1,4 @@
-# Versão 2.0 - 20/07/2017
+# Versão 3.0 - 20/07/2017
 
 # ######################################################################### #
 # ############################## Servidor ################################# #
@@ -6,8 +6,8 @@
 
 import socket
 import _thread
-import threading
-import time
+# import threading
+# import time
 from tkinter import *
 
 dados = {}
@@ -41,7 +41,7 @@ def read(conn, client_address):
             dados[str(client_address[0])] = [(float(msg.decode().split(',')[0]), float(msg.decode().split(',')[1]),
                                               float(msg.decode().split(',')[2]), float(msg.decode().split(',')[3]))]
             saveFile = open('LogFile.txt', 'w')
-            saveFile.write(" V ,   A  , ºC, rad\n")
+            saveFile.write(" V ,   A  , C , rad\n")
             saveFile.write(msg.decode() + '\n')
             saveFile.close()
             new_data +=1
@@ -116,7 +116,7 @@ def GUIcheck():
     label_1 = Label(root, text='Tensao [V]')
     label_2 = Label(root, text='Corrente [A]')
     label_3 = Label(root, text='Potencia [W]')
-    label_4 = Label(root, text='Temperatura [ºC]')
+    label_4 = Label(root, text='Temperatura [C]')
     label_5 = Label(root, text='Orientacao [rad]')
 
     label_1.grid(column=0, row=1)
@@ -142,13 +142,13 @@ def GUIcheck():
             j = 0
             k = 0
 
+            if(k==0)
+
             print('dados_2 ---> ' + str(dados))
 
             print('NEM_DATA_2')
 
-            print(j)
-
-            while i < len(dados[client_address]):
+            while i >= j and i < len(dados[client_address]):
 
                 tensao_i = Label(root, text=str(dados[client_address][i][0]))
                 corrente_i = Label(root, text=str(dados[client_address][i][1]))
@@ -157,13 +157,17 @@ def GUIcheck():
                 temperatura_i = Label(root, text=str(dados[client_address][i][2]))
                 orientacao_i = Label(root, text=str(dados[client_address][i][3]))
 
-                tensao_i.grid(column=0, row=i + 2)
-                corrente_i.grid(column=2, row=i + 2)
-                potencia_i.grid(column=4, row=i + 2)
-                temperatura_i.grid(column=6, row=i + 2)
-                orientacao_i.grid(column=8, row=i + 2)
+                tensao_i.grid(column=0, row=i-j + 2)
+                corrente_i.grid(column=2, row=i-j + 2)
+                potencia_i.grid(column=4, row=i-j + 2)
+                temperatura_i.grid(column=6, row=i-j + 2)
+                orientacao_i.grid(column=8, row=i-j + 2)
 
                 i += 1
+
+                if i>=10:
+                    j += 1
+                    print(j)
 
         new_data = 0
 
