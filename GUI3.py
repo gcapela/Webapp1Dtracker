@@ -1,4 +1,5 @@
-# Versão 3.0 - 20/07/2017
+# Versao 3.1 - 24/07/2017
+# Ja actualiza e limita o display a 10 instantes
 
 # ######################################################################### #
 # ############################## Servidor ################################# #
@@ -58,11 +59,11 @@ def read(conn, client_address):
 
         print('dados ---> ' + str(dados))
 
-        print(len(dados))
+#        print(len(dados))
 
-        print('NEW_DATA:')
+#        print('NEW_DATA:')
 
-        print(new_data)
+#        print(new_data)
 
     conn.close()
     print(str(client_address) + ' - closed connection')
@@ -142,32 +143,40 @@ def GUIcheck():
             j = 0
             k = 0
 
-            if(k==0)
+            print('LEN')
+
+            print(len(dados[client_address]))
+
+            if(len(dados[client_address])>=10):
+                j = len(dados[client_address])-9
+
+            print('j')
+
+            print(j)
+
+            print('\n')
 
             print('dados_2 ---> ' + str(dados))
 
             print('NEM_DATA_2')
 
-            while i >= j and i < len(dados[client_address]):
+            while i < len(dados[client_address]):
 
-                tensao_i = Label(root, text=str(dados[client_address][i][0]))
-                corrente_i = Label(root, text=str(dados[client_address][i][1]))
-                potencia_i = Label(root, text=str(
-                    dados[client_address][i][0] * dados[client_address][i][1]))
-                temperatura_i = Label(root, text=str(dados[client_address][i][2]))
-                orientacao_i = Label(root, text=str(dados[client_address][i][3]))
+                if i>=j:
+                    tensao_i = Label(root, text=str(dados[client_address][i][0]))
+                    corrente_i = Label(root, text=str(dados[client_address][i][1]))
+                    potencia_i = Label(root, text=str(
+                        dados[client_address][i][0] * dados[client_address][i][1]))
+                    temperatura_i = Label(root, text=str(dados[client_address][i][2]))
+                    orientacao_i = Label(root, text=str(dados[client_address][i][3]))
 
-                tensao_i.grid(column=0, row=i-j + 2)
-                corrente_i.grid(column=2, row=i-j + 2)
-                potencia_i.grid(column=4, row=i-j + 2)
-                temperatura_i.grid(column=6, row=i-j + 2)
-                orientacao_i.grid(column=8, row=i-j + 2)
+                    tensao_i.grid(column=0, row=i-j + 2)
+                    corrente_i.grid(column=2, row=i-j + 2)
+                    potencia_i.grid(column=4, row=i-j + 2)
+                    temperatura_i.grid(column=6, row=i-j + 2)
+                    orientacao_i.grid(column=8, row=i-j + 2)
 
                 i += 1
-
-                if i>=10:
-                    j += 1
-                    print(j)
 
         new_data = 0
 
