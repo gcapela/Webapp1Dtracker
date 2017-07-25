@@ -1,4 +1,4 @@
-# Versao 3.1 - 24/07/2017
+# Versao 4.0 - 25/07/2017
 
 # ######################################################################### #
 # ############################## Servidor ################################# #
@@ -7,13 +7,13 @@
 import socket
 import _thread
 from tkinter import *
+import datetime
 
 dados = {}
 
 new_data = 0
 
 # --------------------------------Threads---------------------------------- #
-# TODO: meter o msg.decode().split(',') numa variavel?
 
 
 def read(conn, client_address):
@@ -34,21 +34,23 @@ def read(conn, client_address):
         global dados
         global new_data
 
+        mds = msg.decode().split(',')
+
         if str(client_address[0]) not in dados.keys():
 
-            dados[str(client_address[0])] = [(float(msg.decode().split(',')[0]), float(msg.decode().split(',')[1]),
-                                              float(msg.decode().split(',')[2]), float(msg.decode().split(',')[3]))]
+            dados[str(client_address[0])] = [(float(mds[0]), float(mds[1]),
+                                              float(mds[2]), float(mds[3]))]
             saveFile = open('LogFile.txt', 'w')
-            saveFile.write(" V ,   A  , C , rad \n")
-            saveFile.write(msg.decode() + '\n')
+            saveFile.write(" V ,   A  ,  C ,  rad ,  data \n")
+            saveFile.write(msg.decode() + ' , ' + str(datetime.datetime.now()) + '\n')
             saveFile.close()
 
         else:
 
-            dados[str(client_address[0])] += [(float(msg.decode().split(',')[0]), float(msg.decode().split(',')[1]),
-                                               float(msg.decode().split(',')[2]), float(msg.decode().split(',')[3]))]
+            dados[str(client_address[0])] += [(float(mds[0]), float(mds[1]),
+                                               float(mds[2]), float(mds[3]))]
             appendFile = open('LogFile.txt', 'a')
-            appendFile.write(msg.decode() + '\n')
+            appendFile.write(msg.decode() + ' , ' + str(datetime.datetime.now()) + '\n')
             appendFile.close()
 
         new_data += 1
@@ -98,22 +100,24 @@ def GUIcheck():
     root = Tk()
     root.title('1D Tracker')
 
-    # for client_address in dados.keys():
+    # TODO: acrescentar possibilidade para varios clientes - for client_address in dados.keys():
 
-    cliente = Label(root, text='Cliente ')
-    cliente.grid(columnspan=5)
+    cliente = Label(root, text='Cliente XXXX')
+    cliente.grid(columnspan=6)
 
-    label_1 = Label(root, text='Tensao [V]')
-    label_2 = Label(root, text='Corrente [A]')
-    label_3 = Label(root, text='Potencia [W]')
-    label_4 = Label(root, text='Temperatura [C]')
-    label_5 = Label(root, text='Orientacao [rad]')
+    label_1 = Label(root, text='Data')
+    label_2 = Label(root, text='Tensao [V]')
+    label_3 = Label(root, text='Corrente [A]')
+    label_4 = Label(root, text='Potencia [W]')
+    label_5 = Label(root, text='Temperatura [C]')
+    label_6 = Label(root, text='Orientacao [rad]')
 
     label_1.grid(column=0, row=1)
     label_2.grid(column=1, row=1)
     label_3.grid(column=2, row=1)
     label_4.grid(column=3, row=1)
     label_5.grid(column=4, row=1)
+    label_6.grid(column=5, row=1)
 
     root.update_idletasks()
     root.update()
@@ -136,6 +140,7 @@ def GUIcheck():
 
                 if i >= j:
 
+                    data_i = Label(root, text=str(datetime.datetime.now()))
                     tensao_i = Label(root, text=str(dados[client_address][i][0]))
                     corrente_i = Label(root, text=str(dados[client_address][i][1]))
                     potencia_i = Label(root, text=str(
@@ -143,11 +148,12 @@ def GUIcheck():
                     temperatura_i = Label(root, text=str(dados[client_address][i][2]))
                     orientacao_i = Label(root, text=str(dados[client_address][i][3]))
 
-                    tensao_i.grid(column=0, row=i - j + 2)
-                    corrente_i.grid(column=1, row=i - j + 2)
-                    potencia_i.grid(column=2, row=i - j + 2)
-                    temperatura_i.grid(column=3, row=i - j + 2)
-                    orientacao_i.grid(column=4, row=i - j + 2)
+                    data_i.grid(column=0, row=i - j + 2)
+                    tensao_i.grid(column=1, row=i - j + 2)
+                    corrente_i.grid(column=2, row=i - j + 2)
+                    potencia_i.grid(column=3, row=i - j + 2)
+                    temperatura_i.grid(column=4, row=i - j + 2)
+                    orientacao_i.grid(column=5, row=i - j + 2)
 
                 i += 1
 
