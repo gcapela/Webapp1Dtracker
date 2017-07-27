@@ -2,15 +2,12 @@
 # ##################### Script que faz os graficos ######################## #
 # ######################################################################### #
 
-# TODO: meter dentro do scritpt do GUI ; arranjar uma maneira de meter o tempo a funcionar
+# TODO: meter dentro de uma thread no scritpt do GUI
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.dates as mdates
 import datetime
-
-tempo = [datetime.datetime.now() + datetime.timedelta(hours=i) for i in range(12)]
-
-plt.title('Cliente XXXX')
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
@@ -18,31 +15,44 @@ ax1 = fig.add_subplot(1, 1, 1)
 
 def animate(i):
 
+    dados = open('LogFile.txt', 'r').read()
+    dados_lista = dados.split('\n')
+    del dados_lista[0]
+
     tensoes = []
     correntes = []
     potencias = []
     temperaturas = []
     orientacoes = []
+    datas = []
 
-    for tuplo in dados[str(client_address[0])]:
-        (tensao, corrente, temperatura, orientacao) = tuplo.split(',')
-        tensoes.append(tensao)
-        correntes.append(corrente)
-        potencias.append(tensao * corrente)
-        temperaturas.append(temperatura)
-        orientacoes.append(orientacao)
+    for linha in dados_lista:
+        if len(linha) > 1:
+            (tensao, corrente, temperatura, orientacao, data) = linha.split(',')
+            tensoes.append(float(tensao))
+            correntes.append(float(corrente))
+            potencias.append(float(tensao) * float(corrente))
+            temperaturas.append(float(temperatura))
+            orientacoes.append(float(orientacao))
+            dt = datetime.datetime.strptime(data, ' %Y-%m-%d %H:%M:%S')
+            datas.append(dt)
 
     ax1.clear()
-    ax1.plot(tempo, tensoes, label='Tensao [V]')
-    ax1.plot(tempo, correntes, label='Corrente [A]')
-    ax1.plot(tempo, potencias, label='Potencia [W]')
-    ax1.plot(tempo, temperaturas, label='Temperatura [C]')
-    ax1.plot(tempo, orientacoes, label='Orientacao [rad]')
+    ax1.plot(datas, tensoes, label='Tensao [V]')
+    ax1.plot(datas, correntes, label='Corrente [A]')
+    ax1.plot(datas, potencias, label='Potencia [W]')
+    ax1.plot(datas, temperaturas, label='Temperatura [C]')
+    ax1.plot(datas, orientacoes, label='Orientacao [rad]')
 
+    xfmt = mdates.DateFormatter('%Y-%m-%d %H:%M:%S')
+    ax1.xaxis.set_major_formatter(xfmt)
+    plt.xticks(rotation=45)
+    plt.title('Cliente XXXX')
+    plt.xlabel('Data')
+    plt.ylabel('Valores')
+    plt.legend()
+    plt.tight_layout()
 
-plt.xlabel('tempo [s]')
-plt.ylabel('Valores')
-plt.legend()
 
 ani = animation.FuncAnimation(fig, animate, interval=1000)
 

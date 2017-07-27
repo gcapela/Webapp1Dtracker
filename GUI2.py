@@ -1,4 +1,4 @@
-# Versao 4.0 - 25/07/2017
+# Versao 4.0 - 27/07/2017
 
 # ######################################################################### #
 # ############################## Servidor ################################# #
@@ -35,6 +35,7 @@ def read(conn, client_address):
         global new_data
 
         mds = msg.decode().split(',')
+        data = datetime.datetime.now().replace(microsecond=0)
 
         if str(client_address[0]) not in dados.keys():
 
@@ -42,7 +43,7 @@ def read(conn, client_address):
                                               float(mds[2]), float(mds[3]))]
             saveFile = open('LogFile.txt', 'w')
             saveFile.write(" V ,   A  ,  C ,  rad ,  data \n")
-            saveFile.write(msg.decode() + ' , ' + str(datetime.datetime.now()) + '\n')
+            saveFile.write(msg.decode() + ' , ' + str(data) + '\n')
             saveFile.close()
 
         else:
@@ -50,7 +51,7 @@ def read(conn, client_address):
             dados[str(client_address[0])] += [(float(mds[0]), float(mds[1]),
                                                float(mds[2]), float(mds[3]))]
             appendFile = open('LogFile.txt', 'a')
-            appendFile.write(msg.decode() + ' , ' + str(datetime.datetime.now()) + '\n')
+            appendFile.write(msg.decode() + ' , ' + str(data) + '\n')
             appendFile.close()
 
         new_data += 1
@@ -92,27 +93,28 @@ _thread.start_new_thread(connect, ())
 
 
 # ######################################################################### #
-# ########################## Interface Grafica ############################ #
+# ################################ Tabela ################################# #
 # ######################################################################### #
 
-def GUIcheck():
+def Tabela():
 
     root = Tk()
     root.title('1D Tracker')
 
     # TODO: acrescentar possibilidade para varios clientes - for client_address in dados.keys():
+    # TODO: acrescentar data dos valores a tabela
 
     cliente = Label(root, text='Cliente XXXX')
     cliente.grid(columnspan=6)
 
-    label_1 = Label(root, text='Data')
+    # label_1 = Label(root, text='Data')
     label_2 = Label(root, text='Tensao [V]')
     label_3 = Label(root, text='Corrente [A]')
     label_4 = Label(root, text='Potencia [W]')
     label_5 = Label(root, text='Temperatura [C]')
     label_6 = Label(root, text='Orientacao [rad]')
 
-    label_1.grid(column=0, row=1)
+    # label_1.grid(column=0, row=1)
     label_2.grid(column=1, row=1)
     label_3.grid(column=2, row=1)
     label_4.grid(column=3, row=1)
@@ -140,7 +142,7 @@ def GUIcheck():
 
                 if i >= j:
 
-                    data_i = Label(root, text=str(datetime.datetime.now()))
+                    # data_i = Label(root, text=str(datetime.datetime.now()))
                     tensao_i = Label(root, text=str(dados[client_address][i][0]))
                     corrente_i = Label(root, text=str(dados[client_address][i][1]))
                     potencia_i = Label(root, text=str(
@@ -148,7 +150,7 @@ def GUIcheck():
                     temperatura_i = Label(root, text=str(dados[client_address][i][2]))
                     orientacao_i = Label(root, text=str(dados[client_address][i][3]))
 
-                    data_i.grid(column=0, row=i - j + 2)
+                    # data_i.grid(column=0, row=i - j + 2)
                     tensao_i.grid(column=1, row=i - j + 2)
                     corrente_i.grid(column=2, row=i - j + 2)
                     potencia_i.grid(column=3, row=i - j + 2)
@@ -163,7 +165,7 @@ def GUIcheck():
         root.update()
 
 
-_thread.start_new_thread(GUIcheck, ())
+_thread.start_new_thread(Tabela, ())
 
 while True:
     pass
