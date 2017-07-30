@@ -3,12 +3,13 @@ import _thread
 import tkinter as tk
 import datetime
 import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
 import matplotlib.dates as mdates
-matplotlib.use('TkAgg')
+
 
 dados = {}
 
@@ -98,8 +99,10 @@ ax1 = fig.add_subplot(1, 1, 1)
 
 def animate(i):
 
-    dados = open('LogFile.txt', 'r').read()
-    dados_lista = dados.split('\n')
+    dados = open('LogFile.txt', 'r')
+    dados_1 = dados.read()
+    dados.close()
+    dados_lista = dados_1.split('\n')
     del dados_lista[0]
 
     tensoes = []
@@ -171,7 +174,7 @@ class GUI(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         cliente = tk.Label(self, text='Cliente XXXX')
-        cliente.grid(columnspan=6)
+        cliente.grid(row=0, columnspan=6)
 
         canvas = FigureCanvasTkAgg(fig, self)
         canvas.show()
@@ -181,56 +184,56 @@ class GUI(tk.Frame):
         toolbar.update()
         canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
-        # # label_1 = tk.Label(self, text='Data')
-        # label_2 = tk.Label(self, text='Tensao [V]')
-        # label_3 = tk.Label(self, text='Corrente [A]')
-        # label_4 = tk.Label(self, text='Potencia [W]')
-        # label_5 = tk.Label(self, text='Temperatura [C]')
-        # label_6 = tk.Label(self, text='Orientacao [rad]')
-        #
-        # # label_1.grid(column=0, row=1)
-        # label_2.grid(column=1, row=1)
-        # label_3.grid(column=2, row=1)
-        # label_4.grid(column=3, row=1)
-        # label_5.grid(column=4, row=1)
-        # label_6.grid(column=5, row=1)
-        #
-        # while True:
-        #     global new_data
-        #
-        #     while new_data == 0:
-        #         pass
-        #
-        #     for client_address in dados.keys():
-        #
-        #         i = 0
-        #         j = 0
-        #
-        #         if(len(dados[client_address]) > 10):
-        #             j = len(dados[client_address]) - 10
-        #
-        #         while i < len(dados[client_address]):
-        #
-        #             if i >= j:
-        #
-        #                 # data_i = Label(root, text=str(datetime.datetime.now()))
-        #                 tensao_i = tk.Label(self, text=str(dados[client_address][i][0]))
-        #                 corrente_i = tk.Label(self, text=str(dados[client_address][i][1]))
-        #                 potencia_i = tk.Label(self, text=str(
-        #                     dados[client_address][i][0] * dados[client_address][i][1]))
-        #                 temperatura_i = tk.Label(self, text=str(dados[client_address][i][2]))
-        #                 orientacao_i = tk.Label(self, text=str(dados[client_address][i][3]))
-        #
-        #                 # data_i.grid(column=0, row=i - j + 2)
-        #                 tensao_i.grid(column=1, row=i - j + 2)
-        #                 corrente_i.grid(column=2, row=i - j + 2)
-        #                 potencia_i.grid(column=3, row=i - j + 2)
-        #                 temperatura_i.grid(column=4, row=i - j + 2)
-        #                 orientacao_i.grid(column=5, row=i - j + 2)
-        #
-        #             i += 1
-        #
-        #     new_data = 0
+        # label_1 = tk.Label(self, text='Data')
+        label_2 = tk.Label(self, text='Tensao [V]')
+        label_3 = tk.Label(self, text='Corrente [A]')
+        label_4 = tk.Label(self, text='Potencia [W]')
+        label_5 = tk.Label(self, text='Temperatura [C]')
+        label_6 = tk.Label(self, text='Orientacao [rad]')
+
+        # label_1.grid(column=0, row=1)
+        label_2.grid(column=1, row=1)
+        label_3.grid(column=2, row=1)
+        label_4.grid(column=3, row=1)
+        label_5.grid(column=4, row=1)
+        label_6.grid(column=5, row=1)
+
+        while True:
+            global new_data
+
+            while new_data == 0:
+                pass
+
+            for client_address in dados.keys():
+
+                i = 0
+                j = 0
+
+                if(len(dados[client_address]) > 10):
+                    j = len(dados[client_address]) - 10
+
+                while i < len(dados[client_address]):
+
+                    if i >= j:
+
+                        # data_i = Label(root, text=str(datetime.datetime.now()))
+                        tensao_i = tk.Label(self, text=str(dados[client_address][i][0]))
+                        corrente_i = tk.Label(self, text=str(dados[client_address][i][1]))
+                        potencia_i = tk.Label(self, text=str(
+                            dados[client_address][i][0] * dados[client_address][i][1]))
+                        temperatura_i = tk.Label(self, text=str(dados[client_address][i][2]))
+                        orientacao_i = tk.Label(self, text=str(dados[client_address][i][3]))
+
+                        # data_i.grid(column=0, row=i - j + 2)
+                        tensao_i.grid(column=1, row=i - j + 2)
+                        corrente_i.grid(column=2, row=i - j + 2)
+                        potencia_i.grid(column=3, row=i - j + 2)
+                        temperatura_i.grid(column=4, row=i - j + 2)
+                        orientacao_i.grid(column=5, row=i - j + 2)
+
+                    i += 1
+
+            new_data = 0
 
 
 app = Tracker1D()

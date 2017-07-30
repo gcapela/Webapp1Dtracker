@@ -1,13 +1,19 @@
-# Versao 4.0 - 27/07/2017
-
-# ######################################################################### #
-# ############################## Servidor ################################# #
-# ######################################################################### #
+# Versao 5.0 - 28/07/2017
 
 import socket
 import _thread
 from tkinter import *
 import datetime
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import matplotlib.dates as mdates
+
+
+# ######################################################################### #
+# ############################## Servidor ################################# #
+# ######################################################################### #
 
 dados = {}
 
@@ -85,7 +91,6 @@ def connect():
         _thread.start_new_thread(read, (conn, client_address))
 
     _thread.exit()
-
 # ------------------------------------------------------------------------- #
 
 
@@ -105,7 +110,7 @@ def Tabela():
     # TODO: acrescentar data dos valores a tabela
 
     cliente = Label(root, text='Cliente XXXX')
-    cliente.grid(columnspan=6)
+    cliente.grid(row=0, columnspan=6)
 
     # label_1 = Label(root, text='Data')
     label_2 = Label(root, text='Tensao [V]')
@@ -164,8 +169,80 @@ def Tabela():
         root.update_idletasks()
         root.update()
 
+    _thread.exit()
+# ------------------------------------------------------------------------- #
+
 
 _thread.start_new_thread(Tabela, ())
+
+
+# ######################################################################### #
+# ############################### Graficos ################################ #
+# ######################################################################### #
+
+
+def Graficos():
+
+    while True:
+        global new_data
+
+        while new_data == 0:
+            pass
+
+        fig = plt.figure()
+        ax1 = fig.add_subplot(1, 1, 1)
+
+        def animate(i):
+
+            dados = open('LogFile.txt', 'r')
+            dados_1 = dados.read()
+            dados.close()
+            dados_lista = dados_1.split('\n')
+            del dados_lista[0]
+
+            tensoes = []
+            correntes = []
+            potencias = []
+            temperaturas = []
+            orientacoes = []
+            datas = []
+
+            for linha in dados_lista:
+                if len(linha) > 1:
+                    (tensao, corrente, temperatura, orientacao, data) = linha.split(',')
+                    tensoes.append(float(tensao))
+                    correntes.append(float(corrente))
+                    potencias.append(float(tensao) * float(corrente))
+                    temperaturas.append(float(temperatura))
+                    orientacoes.append(float(orientacao))
+                    dt = datetime.datetime.strptime(data, ' %Y-%m-%d %H:%M:%S')
+                    datas.append(dt)
+
+            ax1.clear()
+            ax1.plot(datas, tensoes, label='Tensao [V]')
+            ax1.plot(datas, correntes, label='Corrente [A]')
+            ax1.plot(datas, potencias, label='Potencia [W]')
+            ax1.plot(datas, temperaturas, label='Temperatura [C]')
+            ax1.plot(datas, orientacoes, label='Orientacao [rad]')
+
+            xfmt = mdates.DateFormatter('%Y-%m-%d %H:%M:%S')
+            ax1.xaxis.set_major_formatter(xfmt)
+            plt.xticks(rotation=45)
+            plt.title('Cliente XXXX')
+            plt.xlabel('Data')
+            plt.ylabel('Valores')
+            plt.legend()
+            plt.tight_layout()
+
+        ani = animation.FuncAnimation(fig, animate, interval=1000)
+
+        plt.show()
+
+    _thread.exit()
+# ------------------------------------------------------------------------- #
+
+
+_thread.start_new_thread(Graficos, ())
 
 while True:
     pass
