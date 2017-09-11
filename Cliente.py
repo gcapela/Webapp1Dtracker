@@ -1,4 +1,4 @@
-# Versão 2.0 - 20/07/2017
+# Versão 5.0 - 11/09/2017
 # Cliente que envia dados
 
 import socket
@@ -13,22 +13,34 @@ tcp.connect(server_address)
 
 while True:
 
-    msg = '12 , 1.64 , 40, 0.27'
+    msg = '12 , 1.64 , 40 , 0.27'
 
     print('sending -->  ' + msg)
     tcp.send(msg.encode())
-    time.sleep(10)
+    time.sleep(5)
 
-    msg = '10 , 1.50 , 35, 0.40'
-
-    print('sending -->  ' + msg)
-    tcp.send(msg.encode())
-    time.sleep(10)
-
-    msg = '15 , 2.00 , 42, 0.50'
+    msg = '10 , 1.50 , 35 , 0.40'
 
     print('sending -->  ' + msg)
     tcp.send(msg.encode())
-    time.sleep(10)
+    time.sleep(5)
+
+    msg = '15 , 2.00 , 42 , 0.50'
+
+    print('sending -->  ' + msg)
+    tcp.send(msg.encode())
+    time.sleep(5)
+
+    msg = '5 , 1.02 , 30 , 0.40'
+
+    print('sending -->  ' + msg)
+    tcp.send(msg.encode())
+    time.sleep(5)
+
+    msg = '8 , 1.40 , 33 , 0.60'
+
+    print('sending -->  ' + msg)
+    tcp.send(msg.encode())
+    time.sleep(5)
 
 tcp.close()
